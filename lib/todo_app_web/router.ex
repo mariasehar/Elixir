@@ -18,6 +18,10 @@ defmodule TodoAppWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    live "/todo_list", Live.TodoList, :todo_list
+    live "/todo_list/create", Live.TodoList, :create
+    live "/todo_list/:id/show", Live.TodoList, :show
+    live "/todo_list/:id/update", Live.TodoList, :update
   end
 
   # Other scopes may use custom stacks.

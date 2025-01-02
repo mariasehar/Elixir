@@ -1,0 +1,64 @@
+<div class="bg-clip-content p-4 bg-emerald-700 border-4 border-emerald-300 border-dashed ">
+  <.header class="">
+    <:actions>
+      <.link patch={~p"/todo_list/create"}>
+        <.button class=" mt-10 mr-10 ">New Todo</.button>
+      </.link>
+    </:actions>
+  </.header>
+  <h1 class="text-3xl text-center font-sans font-bold text-white mt-14">Listing the Data</h1>
+
+  <div class=" p-16 -mt-16 ">
+    <.table id="todo" rows={@todoo}>
+      <:col :let={todoe} label="Id" label_class="text-black font-bold">{todoe.id}</:col>
+      <:col :let={todoe} label="Name" label_class="text-black  font-bold">{todoe.name}</:col>
+      <:col :let={todoe} label="Status" label_class="text-black  font-bold">{todoe.status}</:col>
+      <:col :let={todoe} label="Description" label_class="text-black  font-bold">
+        {todoe.description}
+      </:col>
+
+      <:action :let={todoo}>
+        <.link patch={~p"/todo_list/#{todoo.id}/show"}>
+          <.button class="!bg-white !text-black hover:!bg-black hover:!text-white">
+            Details
+          </.button>
+        </.link>
+      </:action>
+
+      <:action :let={todoo}>
+        <.link patch={~p"/todo_list/#{todoo.id}/update"}>
+          <.button class="!bg-white !text-black hover:!bg-black hover:!text-white">Edit</.button>
+        </.link>
+      </:action>
+
+      <:action :let={todoo}>
+        <.button
+          phx-click={JS.push("delete", value: %{id: todoo.id})}
+          data-confirm="Are you sure?"
+          class="!bg-white !text-black hover:!bg-black hover:!text-white"
+        >
+          Delete
+        </.button>
+      </:action>
+    </.table>
+  </div>
+</div>
+<.modal :if={@live_action == :create} id="todo-modal" show on_cancel={JS.patch(~p"/todo_list")}>
+  <.live_component module={TodoAppWeb.Live.Index} id={:create} todo={@todo} action={@live_action} />
+</.modal>
+<.modal :if={@live_action == :update} id="todo-modal" show on_cancel={JS.patch(~p"/todo_list")}>
+  <.live_component
+    module={TodoAppWeb.Live.Update}
+    id={@todo.id}
+    todo={@todo}
+    action={@live_action}
+  />
+</.modal>
+<.modal :if={@live_action == :show} id="todo-modal" show on_cancel={JS.patch(~p"/todo_list")}>
+  <.live_component
+    module={TodoAppWeb.Live.ShowTodo}
+    id={@todo.id}
+    todo={@todo}
+    action={@live_action}
+  />
+</.modal>
