@@ -1,0 +1,19 @@
+<div>
+  <.form :let={f} for={@crud1} phx-target={@myself} phx-change="validate" phx-submit="update">
+    <.input
+      type="text"
+      placeholder="Enter your Name"
+      label="Name"
+      field={f[:name]}
+      value={@crud.name}
+    />
+    <.input
+      type="text"
+      placeholder="Enter your Status"
+      label="Status"
+      field={f[:status]}
+      value={@crud.status}
+    />
+    <.button type="submit">Save</.button>
+  </.form>
+</div>

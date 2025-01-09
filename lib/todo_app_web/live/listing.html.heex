@@ -1,0 +1,50 @@
+<div>
+  <.header>
+    <:actions>
+      <.link patch={~p"/list/create"}>
+        <.button>New Todo</.button>
+      </.link>
+    </:actions>
+  </.header>
+
+  <.table id="todo" rows={@cruds}>
+    <:col :let={crudd} label="Id">{crudd.id}</:col>
+    <:col :let={crudd} label="Name">{crudd.name}</:col>
+    <:col :let={crudd} label="Status">{crudd.status}</:col>
+
+    <:action :let={crudd}>
+      <.link navigate={~p"/list/show/#{crudd.id}"}>
+        <.button>Details</.button>
+      </.link>
+    </:action>
+
+    <:action :let={crudd}>
+      <.link patch={~p"/list/edit/#{crudd.id}"}>
+        <.button>Edit</.button>
+      </.link>
+    </:action>
+
+    <:action :let={crudd}>
+      <.button phx-click={JS.push("delete", value: %{id: crudd.id})} data-confirm="Are you sure?">
+        Delete
+      </.button>
+    </:action>
+  </.table>
+</div>
+
+<.modal :if={@live_action == :create} id="crud-modal" show on_cancel={JS.patch(~p"/list")}>
+  <.live_component
+    module={TodoAppWeb.Live.Create}
+    id={:create}
+    crud={@crud}
+    action={@live_action}
+  />
+</.modal>
+
+<.modal :if={@live_action == :show} id="crud-modal" show on_cancel={JS.patch(~p"/list")}>
+  <.live_component module={TodoAppWeb.Live.Show} id={:show} crud={@crud} action={@live_action} />
+</.modal>
+
+<.modal :if={@live_action == :edit} id="crud-modal" show on_cancel={JS.patch(~p"/list")}>
+  <.live_component module={TodoAppWeb.Live.Edit} id={:edit} crud={@crud} action={@live_action} />
+</.modal>
