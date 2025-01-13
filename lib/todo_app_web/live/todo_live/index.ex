@@ -42,12 +42,13 @@ defmodule TodoAppWeb.TodoLive.Index do
   end
 
 
-  def handle_info({:todo, todo}, socket) do
+  def handle_info({:todo, _todo}, socket) do
     {:noreply, assign(socket, todos: Todos.list_todos())}
   end
 
 
   @impl true
+  @spec handle_event(<<_::48>>, map(), map()) :: {:noreply, map()}
   def handle_event("delete", %{"id" => id}, socket) do
     todo = Todos.get_todo!(id)
     {:ok, _} = Todos.delete_todo(todo)

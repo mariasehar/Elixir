@@ -5,6 +5,7 @@ defmodule TodoApp.Todos.Todo do
   schema "todos" do
     field :name, :string
     field :status, :string
+    field :image, :string
 
     timestamps(type: :utc_datetime)
   end
@@ -12,7 +13,7 @@ defmodule TodoApp.Todos.Todo do
   @doc false
   def changeset(todo, attrs) do
     todo
-    |> cast(attrs, [:name, :status])
-    |> validate_required([:name, :status])
+    |> cast(attrs, [:name, :status, :image])
+    |> validate_required([:name, :status, :image])
   end
 end

@@ -13,6 +13,13 @@
 >
   <:col :let={todo} label="Name">{todo.name}</:col>
   <:col :let={todo} label="Status">{todo.status}</:col>
+    <:col :let={todo} label="Image"> 
+    <img
+          src={todo.image}
+          alt="uploaded image"
+           style="width: 100px; height: 100px; object-fit: cover;"
+            /></:col>
+
   <:action :let={todo} >
     <div class="sr-only">
       <.link patch={~p"/todos/#{todo}"}>Show</.link>
