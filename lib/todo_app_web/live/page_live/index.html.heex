@@ -1,0 +1,69 @@
+<.header>
+  Listing Pages
+  <:actions>
+    <.link patch={~p"/pages/new"}>
+      <.button>New Page</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="pages" rows={@pages}>
+  <:col :let={page} label="Name">{page.name}</:col>
+  <:col :let={page} label="Status">{page.status}</:col>
+  <:action :let={page}>
+    <div class="sr-only">
+      <.link navigate={~p"/pages/#{page}"}>Show</.link>
+    </div>
+    <.link patch={~p"/pages/#{page}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={page}>
+    <.link phx-click={JS.push("delete", value: %{id: page.id})} data-confirm="Are you sure?">
+       Delete 
+    </.link>
+  </:action>
+</.table>
+
+<div class="pagination flex flex-row items-center space-x-4">
+  <%= if @page_number <= 0 do %>
+   {live_patch("",
+ to: TodoAppWeb.Router.Helpers.page_index_path(@socket, :index, page: @page_number)  )}
+  <% end %>
+
+
+
+  <%= if @page_number > 0 do %>
+    {live_patch("<< Prev Page",
+      to: TodoAppWeb.Router.Helpers.page_index_path(@socket, :index, page: @page_number - 1),
+      class: "pagination-link inline-block"
+    )}
+  <% end %>
+
+  <ul class="flex flex-row space-x-4">
+    <%= for page_list <- Enum.to_list(1..@total_pages) do %>
+      <li class="list-none">
+        {live_patch(page_list,
+          to: TodoAppWeb.Router.Helpers.page_index_path(@socket, :index, page: page_list),
+          class: "pagination-link inline-block"
+        )}
+      </li>
+    <% end %>
+  </ul>
+
+  <%= if @page_number < @total_pages do %>
+    {live_patch("Next Page >>",
+      to: TodoAppWeb.Router.Helpers.page_index_path(@socket, :index, page: @page_number + 1),
+      class: "pagination-link inline-block"
+    )}
+  <% end %>
+</div>
+
+<.modal :if={@live_action in [:new, :edit]} id="page-modal" show on_cancel={JS.patch(~p"/pages")}>
+  <.live_component
+    module={TodoAppWeb.PageLive.FormComponent}
+    id={@page.id || :new}
+    title={@page_title}
+    action={@live_action}
+    page={@page}
+    patch={~p"/pages"}
+  />
+</.modal>
