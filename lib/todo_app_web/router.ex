@@ -14,11 +14,19 @@ defmodule TodoAppWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", TodoAppWeb do
-    pipe_through :browser
+
+
+  scope "/api", TodoAppWeb do
+    pipe_through :api
 
     get "/", PageController, :home
+    get "/items",ItemController, :index
+    get "/items/:id",ItemController, :show
+    put "/items/:id", ItemController, :update
+    post "/items", ItemController, :create
+    delete "/items/:id", ItemController, :delete
   end
+
 
   # Other scopes may use custom stacks.
   # scope "/api", TodoAppWeb do
