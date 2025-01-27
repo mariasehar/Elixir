@@ -1,6 +1,8 @@
 defmodule TodoAppWeb.Router do
   use TodoAppWeb, :router
 
+  import TodoAppWeb.ChatAuth
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -8,6 +10,7 @@ defmodule TodoAppWeb.Router do
     plug :put_root_layout, html: {TodoAppWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :fetch_current_chat
   end
 
   pipeline :api do
@@ -39,6 +42,46 @@ defmodule TodoAppWeb.Router do
 
       live_dashboard "/dashboard", metrics: TodoAppWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
+    end
+  end
+
+  ## Authentication routes
+
+  scope "/", TodoAppWeb do
+    pipe_through [:browser, :redirect_if_chat_is_authenticated]
+
+    live_session :redirect_if_chat_is_authenticated,
+      on_mount: [{TodoAppWeb.ChatAuth, :redirect_if_chat_is_authenticated}] do
+      live "/chats/register", ChatRegistrationLive, :new
+      live "/chats/log_in", ChatLoginLive, :new
+      live "/chats/reset_password", ChatForgotPasswordLive, :new
+      live "/chats/reset_password/:token", ChatResetPasswordLive, :edit
+
+    end
+
+    post "/chats/log_in", ChatSessionController, :create
+  end
+
+  scope "/", TodoAppWeb do
+    pipe_through [:browser, :require_authenticated_chat]
+
+    live_session :require_authenticated_chat,
+      on_mount: [{TodoAppWeb.ChatAuth, :ensure_authenticated}] do
+      live "/chats/settings", ChatSettingsLive, :edit
+      live "/chats/settings/confirm_email/:token", ChatSettingsLive, :confirm_email
+      live "/chat", Live.Index
+    end
+  end
+
+  scope "/", TodoAppWeb do
+    pipe_through [:browser]
+
+    delete "/chats/log_out", ChatSessionController, :delete
+
+    live_session :current_chat,
+      on_mount: [{TodoAppWeb.ChatAuth, :mount_current_chat}] do
+      live "/chats/confirm/:token", ChatConfirmationLive, :edit
+      live "/chats/confirm", ChatConfirmationInstructionsLive, :new
     end
   end
 end
