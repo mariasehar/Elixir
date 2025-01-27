@@ -105,7 +105,7 @@ defmodule TodoApp.Bars do
 
 
   def search_bars(query) do
-    from(b in Bar, where: ilike(b.name,^"%#{query}%" )or ilike(b.status,^"%#{query}%"))
+    from(b in Bar, where: ilike(b.name,^"%#{query}%") or ilike(b.status,^"%#{query}%"))
     |> Repo.all()
   end
 end
