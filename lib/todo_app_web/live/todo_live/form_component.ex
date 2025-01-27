@@ -34,7 +34,10 @@ defmodule TodoAppWeb.TodoLive.FormComponent do
 
         <button type="button" phx-click="cancel-upload" phx-value-ref={entry.ref} aria-label="cancel" class="text-red-800">Cancel Upload</button>
         <p :for={err <- upload_errors(@uploads.image, entry)} class="alert alert-danger">{error_to_string(err)}</p>
+        <progress value={entry.progress} max="100"> <%= entry.progress %>% </progress>
+
         </article>
+
 
         <p :for={err <- upload_errors(@uploads.image)} class="alert alert-danger">
         {error_to_string(err)}
