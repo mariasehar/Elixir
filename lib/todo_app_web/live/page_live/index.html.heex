@@ -10,10 +10,10 @@
 <.table id="pages" rows={@pages}>
   <:col :let={page} label="Name">{page.name}</:col>
   <:col :let={page} label="Status">{page.status}</:col>
+ <:action :let={page}>
+  <.link patch={~p"/pages/#{page.id}"}>Show</.link>
+  </:action>
   <:action :let={page}>
-    <div class="sr-only">
-      <.link navigate={~p"/pages/#{page}"}>Show</.link>
-    </div>
     <.link patch={~p"/pages/#{page}/edit"}>Edit</.link>
   </:action>
   <:action :let={page}>
@@ -29,21 +29,22 @@
  to: TodoAppWeb.Router.Helpers.page_index_path(@socket, :index, page: @page_number)  )}
   <% end %>
 
-
-
-  <%= if @page_number > 0 do %>
+  <%= if @page_number > 1 do %>
+  <div class="">
     {live_patch("<< Prev Page",
       to: TodoAppWeb.Router.Helpers.page_index_path(@socket, :index, page: @page_number - 1),
       class: "pagination-link inline-block"
+      
     )}
+    </div>
   <% end %>
 
   <ul class="flex flex-row space-x-4">
     <%= for page_list <- Enum.to_list(1..@total_pages) do %>
-      <li class="list-none">
+      <li class={"list-none #{if page_list==@page_number, do: "border border-emerald-300 inline-block bg-orange-200 w-5 text-center", else: "pagination-link inline-block"}"}>
         {live_patch(page_list,
           to: TodoAppWeb.Router.Helpers.page_index_path(@socket, :index, page: page_list),
-          class: "pagination-link inline-block"
+         class: "pagination-link inline-block "
         )}
       </li>
     <% end %>

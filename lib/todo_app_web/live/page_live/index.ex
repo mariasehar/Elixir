@@ -6,7 +6,8 @@ defmodule TodoAppWeb.PageLive.Index do
   # import Ecto.Query
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
+    IO.inspect(params, label: "my params")
     page_number = 1
     total_entries = Enum.count(Pages.list_pages())
     total_pages = (total_entries / 5) |> ceil()
@@ -47,7 +48,7 @@ defmodule TodoAppWeb.PageLive.Index do
     |> assign(:page, %Page{})
   end
 
-  defp apply_action(socket, :index, params) do
+  defp apply_action(socket, :index, _params) do
     socket
     |> assign(:page_title, "Listing Pages")
     |> assign(:page, nil)
