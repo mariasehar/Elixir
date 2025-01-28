@@ -9,7 +9,7 @@ defmodule TodoAppWeb.TodoLive.FormComponent do
     <div>
       <.header>
         {@title}
-        <:subtitle>Use this form to manage todo records in your database.</:subtitle>
+        <:subtitle>Add a todo records in your database.</:subtitle>
       </.header>
 
       <.simple_form

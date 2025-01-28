@@ -12,12 +12,15 @@
 
   <:col :let={todo} label="Name">{todo.name}</:col>
   <:col :let={todo} label="Status">
-    <.form :let={f} for={%{}} id="todo-form2" phx-value-id={todo.id} phx-change="validate">
+    <.form :let={f} for={%{}} id="todo-form2"  phx-change="check">
       <.input field={f[:status]} type="checkbox" />
     </.form>
   </:col>
   <:action :let={todo}>
-    <.link navigate={~p"/todos/#{todo.id}"}>Show</.link>
+      <.link navigate={~p"/todos/#{todo.id}"}>Show</.link>
+  </:action>
+
+  <:action :let={todo}>
     <.link patch={~p"/todos/#{todo}/edit"}>Edit</.link>
   </:action>
   <:action :let={todo}>
@@ -31,6 +34,17 @@
   <.live_component
     module={TodoAppWeb.TodoLive.FormComponent}
     id={@todo.id || :new}
+    title={@page_title}
+    action={@live_action}
+    todo={@todo}
+    patch={~p"/todos"}
+  />
+</.modal>
+
+<.modal :if={@live_action in [:show]} id="todo-modal" show on_cancel={JS.patch(~p"/todos")}>
+  <.live_component
+    module={TodoAppWeb.TodoLive.Show}
+    id={:show}
     title={@page_title}
     action={@live_action}
     todo={@todo}

@@ -12,10 +12,8 @@ defmodule TodoAppWeb.TodoLive.Index do
      |> assign(:todos, Todos.list_todos())}
   end
 
-  def handle_event("validate", %{"status" => _status, "id" => id} = params, socket) do
+  def handle_event("check", %{"status" => _status} = params, socket) do
     IO.inspect(params, label: "validated params")
-    todo = Todos.get_todo!(id)
-    Todos.update_todo(todo, params)
 
     query =
       from t in Todo,
@@ -56,6 +54,12 @@ defmodule TodoAppWeb.TodoLive.Index do
     |> assign(:todo, Todos.list_todos())
   end
 
+  defp apply_action(socket, :show, %{"id" => id}) do
+    socket
+    |> assign(:page_title, "Show Todo")
+    |> assign(:todo, Todos.get_todo!(id))
+  end
+
   @impl true
   def handle_info({TodoAppWeb.TodoLive.FormComponent, {:saved, _todo}}, socket) do
     {:noreply, assign(socket, :todos, Todos.list_todos())}
@@ -63,7 +67,3 @@ defmodule TodoAppWeb.TodoLive.Index do
 
 
 end
-
-
-
-

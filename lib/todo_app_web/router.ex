@@ -21,9 +21,7 @@ defmodule TodoAppWeb.Router do
     live "/todos", TodoLive.Index, :index
     live "/todos/new", TodoLive.Index, :new
     live "/todos/:id/edit", TodoLive.Index, :edit
-
-    live "/todos/:id", TodoLive.Show, :show
-    live "/todos/:id/show/edit", TodoLive.Show, :edit
+    live "/todos/:id", TodoLive.Index, :show
 
   end
 
