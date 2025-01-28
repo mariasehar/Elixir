@@ -16,6 +16,5 @@ defmodule TodoAppWeb.BarLive.Show do
      |> assign(:bar, Bars.get_bar!(id))}
   end
 
-  defp page_title(:show), do: "Show Bar"
   defp page_title(:edit), do: "Edit Bar"
 end
