@@ -3,7 +3,6 @@ defmodule TodoAppWeb.PageLive.Index do
 
   alias TodoApp.Pages
   alias TodoApp.Pages.Page
-  # import Ecto.Query
 
   @impl true
   def mount(params, _session, socket) do
@@ -32,7 +31,7 @@ defmodule TodoAppWeb.PageLive.Index do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
-  def handle_params(%{} = params, _url, socket) do
+  def handle_params(params, _url, socket) do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
@@ -55,8 +54,13 @@ defmodule TodoAppWeb.PageLive.Index do
   end
 
   @impl true
-  def handle_info({TodoAppWeb.PageLive.FormComponent, {:saved, page}}, socket) do
-    {:noreply, socket |> assign(:pages, Pages.create_page(page))}
+  def handle_info({TodoAppWeb.PageLive.FormComponent, {:saved, _page}}, socket) do
+    {:noreply, socket
+    |> assign(:pages,  Pages.list_pages())}
+  end
+  @impl true
+  def handle_info({:page, _page}, socket) do
+    {:noreply, assign(socket, pages: Pages.list_pages())}
   end
 
   @impl true
