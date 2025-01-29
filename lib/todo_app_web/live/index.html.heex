@@ -1,0 +1,27 @@
+<div>
+  <.form :let={f} for={@form} phx-target={@myself} phx-change="validate" phx-submit="save">
+    <.input
+      type="text"
+      field={f[:name]}
+      label="Name"
+      placeholder="Enter your Name"
+      value={f.data.name}
+    />
+    <.input
+      type="text"
+      field={f[:status]}
+      label="Status"
+      placeholder="Enter your Status"
+      value={f.data.status}
+    />
+    <.input
+      type="textarea"
+      field={f[:description]}
+      label="Description"
+      placeholder="Enter your description"
+    /><br />
+    <div class="flex items-center justify-center">
+      <.button type="submit" class="!bg-emerald-700 ">Save</.button>
+    </div>
+  </.form>
+</div>
