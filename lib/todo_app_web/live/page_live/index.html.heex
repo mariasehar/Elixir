@@ -10,32 +10,32 @@
 <.table id="pages" rows={@pages}>
   <:col :let={page} label="Name">{page.name}</:col>
   <:col :let={page} label="Status">{page.status}</:col>
- <:action :let={page}>
-  <.link patch={~p"/pages/#{page.id}"}>Show</.link>
+  <:action :let={page}>
+    <.link patch={~p"/pages/#{page.id}"}>Show</.link>
   </:action>
   <:action :let={page}>
     <.link patch={~p"/pages/#{page}/edit"}>Edit</.link>
   </:action>
   <:action :let={page}>
     <.link phx-click={JS.push("delete", value: %{id: page.id})} data-confirm="Are you sure?">
-       Delete 
+      Delete
     </.link>
   </:action>
 </.table>
 
 <div class="pagination flex flex-row items-center space-x-4">
   <%= if @page_number <= 0 do %>
-   {live_patch("",
- to: TodoAppWeb.Router.Helpers.page_index_path(@socket, :index, page: @page_number)  )}
+    {live_patch("",
+      to: TodoAppWeb.Router.Helpers.page_index_path(@socket, :index, page: @page_number)
+    )}
   <% end %>
 
   <%= if @page_number > 1 do %>
-  <div class="">
-    {live_patch("<< Prev Page",
-      to: TodoAppWeb.Router.Helpers.page_index_path(@socket, :index, page: @page_number - 1),
-      class: "pagination-link inline-block"
-      
-    )}
+    <div class="">
+      {live_patch("<< Prev Page",
+        to: TodoAppWeb.Router.Helpers.page_index_path(@socket, :index, page: @page_number - 1),
+        class: "pagination-link inline-block"
+      )}
     </div>
   <% end %>
 
@@ -44,7 +44,7 @@
       <li class={"list-none #{if page_list==@page_number, do: "border border-emerald-300 inline-block bg-orange-200 w-5 text-center", else: "pagination-link inline-block"}"}>
         {live_patch(page_list,
           to: TodoAppWeb.Router.Helpers.page_index_path(@socket, :index, page: page_list),
-         class: "pagination-link inline-block "
+          class: "pagination-link inline-block "
         )}
       </li>
     <% end %>

@@ -46,8 +46,7 @@ defmodule TodoAppWeb.PageLive.FormComponent do
   end
 
   def handle_event("save", %{"page" => page_params}, socket) do
-
-    IO.inspect( page_params, label: "my saved params")
+    IO.inspect(page_params, label: "my saved params")
     save_page(socket, socket.assigns.action, page_params)
   end
 

@@ -55,9 +55,11 @@ defmodule TodoAppWeb.PageLive.Index do
 
   @impl true
   def handle_info({TodoAppWeb.PageLive.FormComponent, {:saved, _page}}, socket) do
-    {:noreply, socket
-    |> assign(:pages,  Pages.list_pages())}
+    {:noreply,
+     socket
+     |> assign(:pages, Pages.list_pages(1))}
   end
+
   @impl true
   def handle_info({:page, _page}, socket) do
     {:noreply, assign(socket, pages: Pages.list_pages())}
