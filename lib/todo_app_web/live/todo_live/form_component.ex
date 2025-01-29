@@ -9,7 +9,7 @@ defmodule TodoAppWeb.TodoLive.FormComponent do
     <div>
       <.header>
         {@title}
-        <:subtitle>Use this form to manage todo records in your database.</:subtitle>
+        <:subtitle>Image upload with Progress bar</:subtitle>
       </.header>
 
       <.simple_form
@@ -32,7 +32,6 @@ defmodule TodoAppWeb.TodoLive.FormComponent do
         <section phx-drop-target={@uploads.image.ref}>
         <article :for={entry <- @uploads.image.entries} class="upload-entry">
 
-        <button type="button" phx-click="cancel-upload" phx-value-ref={entry.ref} aria-label="cancel" class="text-red-800">Cancel Upload</button>
         <p :for={err <- upload_errors(@uploads.image, entry)} class="alert alert-danger">{error_to_string(err)}</p>
         <progress value={entry.progress} max="100"> <%= entry.progress %>% </progress>
 
@@ -87,9 +86,8 @@ defmodule TodoAppWeb.TodoLive.FormComponent do
 
     save_todo(socket, socket.assigns.action, new_todo_params)
   end
-  def handle_event("cancel-upload", %{"ref" => ref}, socket) do
-    {:noreply, cancel_upload(socket, :image, ref)}
-  end
+
+
 
   defp save_todo(socket, :edit, todo_params) do
     IO.inspect(todo_params, label: "saved todo")
