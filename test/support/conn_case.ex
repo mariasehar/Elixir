@@ -35,4 +35,30 @@ defmodule TodoAppWeb.ConnCase do
     TodoApp.DataCase.setup_sandbox(tags)
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
+
+  @doc """
+  Setup helper that registers and logs in chats.
+
+      setup :register_and_log_in_chat
+
+  It stores an updated connection and a registered chat in the
+  test context.
+  """
+  def register_and_log_in_chat(%{conn: conn}) do
+    chat = TodoApp.ChatsFixtures.chat_fixture()
+    %{conn: log_in_chat(conn, chat), chat: chat}
+  end
+
+  @doc """
+  Logs the given `chat` into the `conn`.
+
+  It returns an updated `conn`.
+  """
+  def log_in_chat(conn, chat) do
+    token = TodoApp.Chats.generate_chat_session_token(chat)
+
+    conn
+    |> Phoenix.ConnTest.init_test_session(%{})
+    |> Plug.Conn.put_session(:chat_token, token)
+  end
 end
