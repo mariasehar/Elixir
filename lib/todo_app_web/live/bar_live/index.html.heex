@@ -1,0 +1,55 @@
+<div>
+<.header>
+  Listing Bars
+  <:actions>
+    <.link patch={~p"/bars/new"}>
+      <.button>New Bar</.button>
+    </.link>
+  </:actions>
+</.header>
+
+
+  <div>
+    <.simple_form for={%{}} id="search-form" phx-change="search" phx-submit="search">
+      <input type="search" name="query" placeholder="search name or status" autocomplete="on" label="Search" />
+      <.button type="submit">Search</.button>
+    </.simple_form>
+  </div>
+
+<div>
+<.table
+  id="bars"
+  rows={@bars}
+>
+  <:col :let={ bar} label="Name">{bar.name}</:col>
+  <:col :let={bar} label="Status">{bar.status}</:col>
+  <:action :let={bar}>
+    <div class="sr-only">
+      <.link navigate={~p"/bars/#{bar}"}>Show</.link>
+    </div>
+    <.link patch={~p"/bars/#{bar}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={bar}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: bar.id}) }
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+</div>
+</div>
+
+
+
+<.modal :if={@live_action in [:new, :edit]} id="bar-modal" show on_cancel={JS.patch(~p"/bars")}>
+  <.live_component
+    module={TodoAppWeb.BarLive.FormComponent}
+    id={@bar.id || :new}
+    title={@page_title}
+    action={@live_action}
+    bar={@bar}
+    patch={~p"/bars"}
+  />
+</.modal>
