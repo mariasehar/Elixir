@@ -1,0 +1,22 @@
+<div class="items-center justify-center mt-44">
+  <h1 class="text-7xl text-center font-bold">Counter</h1>
+  <br /><br />
+
+  <h1 class="text-5xl text-center font-bold text-yellow-800">{@number}</h1>
+  <br /><br />
+  <div class="flex items-center justify-center">
+    <.button
+      phx-click={JS.push("minus", value: %{number2: @number})}
+      class="w-20 font-bold text-2xl mr-5"
+    >
+      -
+    </.button>
+    <.button phx-click="reset" class="w-44">Reset</.button>
+    <.button
+      phx-click={JS.push("add", value: %{number1: @number})}
+      class="w-20 font-bold text-2xl ml-5"
+    >
+      +
+    </.button>
+  </div>
+</div>
