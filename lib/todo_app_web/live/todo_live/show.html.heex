@@ -1,0 +1,14 @@
+<div><.header>
+  Todo {@todo.id}
+  <:subtitle>This is a todo record from your database.</:subtitle>
+ 
+</.header>
+
+<.list>
+  <:item title="Name">{@todo.name}</:item>
+  <:item title="Status">{@todo.status}</:item>
+</.list>
+
+<.back navigate={~p"/todos"}>Back to todos</.back>
+
+</div>
