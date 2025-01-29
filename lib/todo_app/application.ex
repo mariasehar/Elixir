@@ -11,7 +11,7 @@ defmodule TodoApp.Application do
       TodoAppWeb.Telemetry,
       TodoApp.Repo,
       {DNSCluster, query: Application.get_env(:todo_app, :dns_cluster_query) || :ignore},
-      {Phoenix.PubSub, name: TodoApp.PubSub},
+      {Phoenix.PubSub, [name: TodoApp.PubSub, adapter: Phoenix.PubSub.PG2]},
       # Start the Finch HTTP client for sending emails
       {Finch, name: TodoApp.Finch},
       # Start a worker by calling: TodoApp.Worker.start_link(arg)
@@ -19,6 +19,7 @@ defmodule TodoApp.Application do
       # Start to serve requests, typically the last entry
       TodoAppWeb.Endpoint
     ]
+
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
